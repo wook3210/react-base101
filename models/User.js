@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 const bcrypt = require('bcrypt')
+const crypto = require('crypto');
 const saltRounds = 10;
 
 const jwt = require('jsonwebtoken')
@@ -57,6 +58,9 @@ userSchema.pre('save', function(next){
 
 })
 
+//
+//We may also define our own custom document instance methods.
+//https://mongoosejs.com/docs/guide.html#methods
 userSchema.methods.comparePassword = function(plainPassword, cb){
 
     console.log("this.password: " + this.password )
@@ -81,6 +85,18 @@ console.log("user._id.toHexString() : " + user._id.toHexString())
         cb(null, user);
     })
 }
+
+// 사용자 정의 매소드 추가하기의 또다른 방법 아래 링크
+// 출처: https://mobicon.tistory.com/302 [Mobile Convergence]
+//  Schema.prototype.method()
+// The example above uses the Schema.methods object directly to save an instance method. You can also use the Schema.method()
+// https://mongoosejs.com/docs/api.html#schema_Schema-method
+// Schema.method() adds instance methods to the "Schema.methods object". You can also add instance methods directly to the Schema.methods object as seen in the
+userSchema.method('generateTokenOfUserDate', function() {
+    return crypto.createHash('md5').update(this.name + Date().toString()).digest("hex");
+  });
+
+
 
 userSchema.statics.findByToken = function(token, cb){
     var user = this;

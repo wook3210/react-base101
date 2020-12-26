@@ -55,6 +55,9 @@ app.post('/login', (req, res)=> {
         if(!isMatch)
           return res.json({loginSuccess:false, message:"password is wrong!"});
 
+      //2.5 
+      const hashVal = user.generateTokenOfUserDate();
+      console.log("has :" + hashVal )
       //3. token 생성
         user.generateToken((err, user) => {
           if(err) return res.status(400).send(err);
