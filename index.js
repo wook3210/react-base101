@@ -53,7 +53,7 @@ app.post('/login', (req, res)=> {
       //2. password 체크
       user.comparePassword(req.body.password, (err, isMatch)=>{
         if(!isMatch)
-          return res.json({loginSuccess:false, message:"password is wrong"});
+          return res.json({loginSuccess:false, message:"password is wrong!"});
 
       //3. token 생성
         user.generateToken((err, user) => {
