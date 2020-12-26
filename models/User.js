@@ -93,10 +93,17 @@ console.log("user._id.toHexString() : " + user._id.toHexString())
 // https://mongoosejs.com/docs/api.html#schema_Schema-method
 // Schema.method() adds instance methods to the "Schema.methods object". You can also add instance methods directly to the Schema.methods object as seen in the
 userSchema.method('generateTokenOfUserDate', function() {
+    
+    // 사용자 정의 매소드 정리 
+    var myObj = Object(); 
+    const mongo1 = myObj.methods = {};
+    myObj.methods.userPlus = function(a, b){
+        return a+b+' the salt';
+    }
+    console.log(mongo1.userPlus('I ','like'))
+    
     return crypto.createHash('md5').update(this.name + Date().toString()).digest("hex");
   });
-
-
 
 userSchema.statics.findByToken = function(token, cb){
     var user = this;
